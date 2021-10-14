@@ -1,0 +1,32 @@
+.country__input {
+  display: block;
+  min-width: 400px;
+  height: 50px;
+  padding-left: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+
+  color: rgb(252, 88, 29);
+  border-color: rgb(252, 88, 29);
+  border-radius: 4px;
+  outline: none;
+
+  &::placeholder {
+    color: rgb(252, 88, 29);
+  }
+}
+
+.country__name {
+  text-align: center;
+  font-size: 48px;
+}
+
+.country__desc {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.country__content {
+  font-size: 30px;
+}
