@@ -1,6 +1,6 @@
 import './sass/main.scss';
 const debounce = require('lodash.debounce');
-import fetchCountries from './js/fetchCountries';
+import API from './js/fetchCountries';
 import countryCard from './templates/country-card.hbs';
 import countriesList from './templates/country-list.hbs';
 const { error } = require("@pnotify/core");
@@ -15,37 +15,38 @@ input.addEventListener('input', debounce(onCountrySearch, 500));
 function onCountrySearch(e) {
     const searchQuery = e.target.value;
     
-    if (searchQuery) {
-        fetchCountries(searchQuery).then(countries => {
-            if (countries.length === 1) {
-                const countryCardMarkup = countryCard(countries);
-                list.innerHTML = countryCardMarkup;
-            } else if (countries.length >= 2 && countries.length <= 10) {
-                const countriesListMarkup = countriesList(countries);
-                list.innerHTML = countriesListMarkup;
-            } else if (countries.length > 10) {
-                error({
-                    text: "Too many matches found. Please enter a more specific query!",
-                    delay: 1000,
-                    maxTextHeight: null,
-                })
-            } else {
-                error({
-                    text: "Invalid request or country not found.",
-                    delay: 1000,
-                    maxTextHeight: null,
-                });
-            };
-        }).catch((error) => {
+    if (!searchQuery) {
+        list.innerHTML = '';
+        return;
+    }
+
+    API.fetchCountries(searchQuery).then(countries => {
+        if (countries.length > 10) {
             error({
-                    text: "Something wrong!",
-                    delay: 1000,
-                    maxTextHeight: null,
+                text: "Too many matches found. Please enter a more specific query!",
+                delay: 1000,
+                maxTextHeight: null,
             })
-        });
-    } else {
-         list.innerHTML = '';
-    }  
+        } else if (countries.length >= 2 && countries.length <= 10) {
+            const countriesListMarkup = countriesList(countries);
+            list.innerHTML = countriesListMarkup;
+        } else if (countries.length === 1) {
+            const countryCardMarkup = countryCard(countries);
+            list.innerHTML = countryCardMarkup;
+        } else {
+            error({
+                text: "Invalid request or country not found.",
+                delay: 1000,
+                maxTextHeight: null,
+            });
+        };
+    }).catch((error) => {
+        error({
+            text: "Something wrong!",
+            delay: 1000,
+            maxTextHeight: null,
+        })
+    }); 
 }
 
 
