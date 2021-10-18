@@ -40,7 +40,7 @@ function onCountrySearch(e) {
                 maxTextHeight: null,
             });
         };
-    }).catch((error) => {
+    }).catch((err) => {
         error({
             text: "Something wrong!",
             delay: 1000,
