@@ -1,6 +1,8 @@
-function fetchCountries (searchQuery) {
-    return fetch(`https://restcountries.com/v2/name/${searchQuery}`)
-        .then(resp => { return resp.json() })
+async function fetchCountries(searchQuery) {
+    const response = await fetch(`https://restcountries.com/v2/name/${searchQuery}`);
+    const country = response.json();
+
+    return country;     
 }
 
 export default { fetchCountries };

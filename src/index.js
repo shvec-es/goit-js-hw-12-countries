@@ -12,15 +12,17 @@ const list = document.querySelector('.country__list');
 
 input.addEventListener('input', debounce(onCountrySearch, 500));
 
-function onCountrySearch(e) {
-    const searchQuery = e.target.value;
-    
-    if (!searchQuery) {
+async function onCountrySearch(e) {
+    try {
+        const searchQuery = e.target.value;
+        
+        if (!searchQuery) {
         list.innerHTML = '';
         return;
-    }
+        }
 
-    API.fetchCountries(searchQuery).then(countries => {
+        const countries = await API.fetchCountries(searchQuery);
+        
         if (countries.length > 10) {
             error({
                 text: "Too many matches found. Please enter a more specific query!",
@@ -39,14 +41,14 @@ function onCountrySearch(e) {
                 delay: 1000,
                 maxTextHeight: null,
             });
-        };
-    }).catch((err) => {
-        error({
-            text: "Something wrong!",
-            delay: 1000,
-            maxTextHeight: null,
-        })
-    }); 
+        }; 
+    } catch {
+            error({
+                text: "Something wrong!",
+                delay: 1000,
+                maxTextHeight: null,
+            })
+    }
 }
 
 
