@@ -13,7 +13,7 @@ const list = document.querySelector('.country__list');
 input.addEventListener('input', debounce(onCountrySearch, 500));
 
 async function onCountrySearch(e) {
-    try {
+    
         const searchQuery = e.target.value;
         
         if (!searchQuery) {
@@ -21,6 +21,7 @@ async function onCountrySearch(e) {
         return;
         }
 
+    try {
         const countries = await API.fetchCountries(searchQuery);
         
         if (countries.length > 10) {
